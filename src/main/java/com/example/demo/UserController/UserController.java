@@ -1,8 +1,11 @@
-package com.example.demo.controller;
+package com.example.demo.UserController;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -15,23 +18,61 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    @GetMapping("")
+    public Map<String, String> home() {
+        return Map.of("message", "API is working");
+    }
+
+    @GetMapping("/health")
+    public String health() {
+        return "Application is running";
+    }
+
+    @GetMapping("/login")
+    public String loginGet() {
+        return "API working fine";
+    }
+
     @PostMapping("/signup")
-    public User signup(@RequestBody User user) {
-        return userRepository.save(user);
+    public Map<String, String> signup(@RequestBody User user) {
+
+        Map<String, String> response = new HashMap<>();
+
+        User existingUser = userRepository.findByEmail(user.getEmail());
+
+        if (existingUser != null) {
+            response.put("status", "FAILED");
+            response.put("message", "Account already exists with this email");
+            return response;
+        }
+
+        userRepository.save(user);
+
+        response.put("status", "SUCCESS");
+        response.put("message", "Account Created Successfully");
+
+        return response;
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User request) {
+    public Map<String, String> login(@RequestBody User request) {
 
-        User user =
-                userRepository.findByUsername(request.getUsername());
+        Map<String, String> response = new HashMap<>();
+
+        User user = userRepository.findByEmail(request.getEmail());
 
         if (user != null &&
                 user.getPassword().equals(request.getPassword())) {
 
-            return "SUCCESS";
+            response.put("status", "SUCCESS");
+            response.put("message", "Login Successful");
+            response.put("username", user.getUsername());
+        } else {
+
+            response.put("status", "FAILED");
+            response.put("message", "Invalid Credentials");
         }
 
-        return "INVALID CREDENTIALS";
+        return response;
     }
 }
