@@ -17,5 +17,8 @@ public class User {
     private String username;
     private String email;
     private String password;
+<<<<<<< HEAD
 
+=======
+>>>>>>> b64fa8e5b9df9780bb6e727fab38330ddd1f851f
 }
