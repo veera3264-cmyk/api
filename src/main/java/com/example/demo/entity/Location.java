@@ -20,5 +20,9 @@ public class Location {
     @Column(name = "location_name")
     private String locationName;
 
+    @Column(name = "organization")
+    private String organization;
+
+    @Column(name = "state")
     private String state;
 }
