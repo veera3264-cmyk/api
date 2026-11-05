@@ -21,6 +21,9 @@ public class LocationPurchase {
     @Column(name = "location_id")
     private Long locationId;
 
+    @Column(name = "assigned_to")
+    private Long assignedTo;
+
     @Column(name = "purchase_date")
     private LocalDate purchaseDate;
 
@@ -50,4 +53,7 @@ public class LocationPurchase {
 
     @Column(name = "possible_duplicate")
     private String possibleDuplicate;
+
+    @Column(name = "status")
+    private String status;
 }

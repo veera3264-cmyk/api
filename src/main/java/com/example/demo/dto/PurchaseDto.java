@@ -38,4 +38,8 @@ public class PurchaseDto {
     private BigDecimal aging;
 
     private String possibleDuplicate;
+
+    private String status;
+
+
 }

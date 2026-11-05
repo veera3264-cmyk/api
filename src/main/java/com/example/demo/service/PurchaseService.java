@@ -100,6 +100,11 @@ public class PurchaseService {
                             ? row[13].toString()
                             : null);
 
+            dto.setStatus(
+                    row[14] != null
+                            ? row[14].toString()
+                            : null);
+
             result.add(dto);
         }
 
