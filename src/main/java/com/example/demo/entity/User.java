@@ -18,4 +18,8 @@ public class User {
     private String email;
     private String password;
     private String skillLevel;
+
+    public String getRole() {
+        return "";
+    }
 }
