@@ -19,6 +19,8 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class AssignmentService {
 
+    private static final String DELIVERY_STATUS = "DELIVERIES";
+
     private final UserRepository userRepository;
     private final LocationPurchaseRepository locationPurchaseRepository;
 
@@ -54,7 +56,7 @@ public class AssignmentService {
                 locationPurchaseRepository
                         .findByAssignedToAndStatus(
                                 user.getId(),
-                                "ASSIGNED");
+                                DELIVERY_STATUS);
 
         int currentCount = currentAssignments.size();
         int needed = targetAssignments - currentCount;
@@ -65,12 +67,11 @@ public class AssignmentService {
 
         List<LocationPurchase> purchases =
                 locationPurchaseRepository
-                        .lockPendingPurchases(
+                        .lockUnassignedDeliveryPurchases(
                                 org.springframework.data.domain.PageRequest.of(0, needed));
 
         purchases.forEach(purchase -> {
             purchase.setAssignedTo(user.getId());
-            purchase.setStatus("ASSIGNED");
         });
 
         locationPurchaseRepository.saveAll(purchases);

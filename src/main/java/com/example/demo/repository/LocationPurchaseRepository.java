@@ -45,9 +45,9 @@ public interface LocationPurchaseRepository
             SELECT lp
             FROM LocationPurchase lp
             WHERE lp.assignedTo IS NULL
-              AND lp.status = 'PENDING'
+              AND lp.status = 'DELIVERIES'
             ORDER BY lp.id
             """)
-    List<LocationPurchase> lockPendingPurchases(
+    List<LocationPurchase> lockUnassignedDeliveryPurchases(
             Pageable pageable);
 }
