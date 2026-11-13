@@ -4,6 +4,7 @@ import com.example.demo.entity.LocationPurchase;
 import com.example.demo.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +20,10 @@ public class AssignmentController {
     @PostMapping("/auto-assign")
     public List<LocationPurchase> autoAssignPurchases() {
         return assignmentService.autoAssignPurchases();
+    }
+
+    @GetMapping("/my-purchases")
+    public List<LocationPurchase> getMyAssignments() {
+        return assignmentService.getMyAssignments();
     }
 }

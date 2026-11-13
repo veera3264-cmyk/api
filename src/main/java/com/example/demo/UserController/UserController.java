@@ -52,12 +52,8 @@ public class UserController {
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody User request) {
 
-        System.out.println("LOGIN CONTROLLER HIT");
-
         User user = userRepository.findByEmail(request.getEmail());
-        System.out.println("REQUEST EMAIL = " + request.getEmail());
         System.out.println("REQUEST PASSWORD = " + request.getPassword());
-        System.out.println("USER FOUND = " + (user != null));
 
         if (user != null &&
                 user.getPassword().equals(request.getPassword())) {

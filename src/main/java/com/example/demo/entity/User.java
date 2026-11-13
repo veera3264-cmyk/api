@@ -22,4 +22,7 @@ public class User {
     public String getRole() {
         return "";
     }
+
+    public void setRole(String roleUser) {
+    }
 }

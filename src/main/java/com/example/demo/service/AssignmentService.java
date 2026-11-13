@@ -26,28 +26,7 @@ public class AssignmentService {
 
     @Transactional
     public List<LocationPurchase> autoAssignPurchases() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null
-                || !authentication.isAuthenticated()
-                || authentication.getName() == null
-                || "anonymousUser".equals(authentication.getName())) {
-
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    "Authentication required");
-        }
-
-        User user =
-                userRepository.findByEmail(authentication.getName());
-
-        if (user == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "User not found");
-        }
+        User user = getAuthenticatedUser();
 
         int targetAssignments =
                 getAssignmentCount(user.getSkillLevel());
@@ -79,6 +58,37 @@ public class AssignmentService {
         currentAssignments.addAll(purchases);
 
         return currentAssignments;
+    }
+
+    @Transactional(readOnly = true)
+    public List<LocationPurchase> getMyAssignments() {
+        User user = getAuthenticatedUser();
+        return locationPurchaseRepository.findByAssignedToAndStatus(
+                user.getId(),
+                DELIVERY_STATUS);
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication.getName() == null
+                || "anonymousUser".equals(authentication.getName())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Authentication required");
+        }
+
+        User user = userRepository.findByEmail(authentication.getName());
+        if (user == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "User not found");
+        }
+        return user;
     }
 
     private int getAssignmentCount(String skillLevel) {
